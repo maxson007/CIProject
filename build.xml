@@ -27,6 +27,7 @@
     <property name="phpmd"   value="${basedir}/vendor/bin/phpmd"/>
     <property name="phpunit" value="${basedir}/vendor/bin/phpunit"/>
     <property name="phpmetrics" value="${basedir}/vendor/bin/phpmetrics"/>
+    <property name="phpcb" value="${basedir}/vendor/bin/phpcb"/>
 
     <target name="full-build"
             depends="prepare,static-analysis,phpunit,phpdox,-check-failure"
@@ -41,7 +42,7 @@
             description="Performs a lint check and runs the tests (without generating code coverage reports)"/>
 
     <target name="static-analysis"
-            depends="lint,phploc-ci,pdepend,phpmd-ci,phpcs-ci,phpcpd-ci,phpmetrics"
+            depends="lint,phploc-ci,pdepend,phpmd-ci,phpcs-ci,phpcpd-ci,phpmetrics,phpcb"
             description="Performs static analysis" />
 
     <!-- Adjust the threadCount attribute's value to the number of CPUs -->
@@ -68,6 +69,8 @@
         <delete dir="${basedir}/build/pdepend"/>
         <delete dir="${basedir}/build/phpdox"/>
         <delete dir="${basedir}/build/phpmetrics"/>
+        <delete dir="${basedir}/build/code-browser"/>
+
 
         <property name="clean.done" value="true"/>
     </target>
@@ -82,6 +85,7 @@
         <mkdir dir="${basedir}/build/pdepend"/>
         <mkdir dir="${basedir}/build/phpdox"/>
         <mkdir dir="${basedir}/build/phpmetrics"/>
+        <mkdir dir="${basedir}/build/code-browser"/>
         <property name="prepare.done" value="true"/>
     </target>
 
@@ -285,5 +289,15 @@
         <property name="phpmetrics.done" value="true"/>
     </target>
     
+    <target name="phpcb" 
+            unless="phpcb.done"
+            depends="prepare"
+            description="Run PHP CODE BROWSER">
+        <exec executable="${phpcb}" resultproperty="result.phpcb" taskname="phpcb">
+            <arg value="--log '${basedir}/build/code-browser/logs'"/>
+            <arg value="--output '${basedir}/build/code-browser' "/>
+            <arg value="--source '${basedir}/src'" />
+        </exec>
+    </target>
 </project>
 
