@@ -298,6 +298,7 @@
             <arg value="--output '${basedir}/build/code-browser' "/>
             <arg value="--source '${basedir}/src'" />
         </exec>
+        <property name="phpcb.done" value="true"/>
     </target>
 </project>
 
