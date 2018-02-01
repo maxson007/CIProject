@@ -26,6 +26,7 @@
     <property name="phploc"  value="${basedir}/vendor/bin/phploc"/>
     <property name="phpmd"   value="${basedir}/vendor/bin/phpmd"/>
     <property name="phpunit" value="${basedir}/vendor/bin/phpunit"/>
+    <property name="phpmetrics" value="${basedir}/vendor/bin/phpmetrics"/>
 
     <target name="full-build"
             depends="prepare,static-analysis,phpunit,phpdox"
@@ -40,7 +41,7 @@
             description="Performs a lint check and runs the tests (without generating code coverage reports)"/>
 
     <target name="static-analysis"
-            depends="lint,phploc-ci,pdepend,phpmd-ci,phpcs-ci,phpcpd-ci"
+            depends="lint,phploc-ci,pdepend,phpmd-ci,phpcs-ci,phpcpd-ci,phpmetrics"
             description="Performs static analysis" />
 
     <!-- Adjust the threadCount attribute's value to the number of CPUs -->
@@ -66,6 +67,8 @@
         <delete dir="${basedir}/build/logs"/>
         <delete dir="${basedir}/build/pdepend"/>
         <delete dir="${basedir}/build/phpdox"/>
+        <delete dir="${basedir}/build/phpmetrics"/>
+
         <property name="clean.done" value="true"/>
     </target>
 
@@ -78,6 +81,7 @@
         <mkdir dir="${basedir}/build/logs"/>
         <mkdir dir="${basedir}/build/pdepend"/>
         <mkdir dir="${basedir}/build/phpdox"/>
+        <mkdir dir="${basedir}/build/phpmetrics"/>
         <property name="prepare.done" value="true"/>
     </target>
 
@@ -268,5 +272,18 @@
             </condition>
         </fail>
     </target>
+    
+    <target name="phpmetrics"
+            unless="phpmetrics.done"
+            depends="prepare"
+            description="Run PHP Metric" >
+        <exec executable="${phpmetrics}" resultproperty="result.phpmetrics" taskname="phpmetrics">
+            <arg value="--report-html=${basedir}/build/phpmetrics"/>
+            <arg value="${basedir}/src"/>
+        </exec>
+
+        <property name="phpmetrics.done" value="true"/>
+    </target>
+    
 </project>
 
