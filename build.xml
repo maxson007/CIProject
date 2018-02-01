@@ -70,8 +70,6 @@
         <delete dir="${basedir}/build/phpdox"/>
         <delete dir="${basedir}/build/phpmetrics"/>
         <delete dir="${basedir}/build/code-browser"/>
-
-
         <property name="clean.done" value="true"/>
     </target>
 
