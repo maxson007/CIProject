@@ -15,7 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-class Default3Controller extends Controller{
+class DefaultController extends Controller{
     /**
      * @Route("/", name="homepage")
      */
